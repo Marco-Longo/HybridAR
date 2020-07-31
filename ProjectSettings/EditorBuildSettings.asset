@@ -11,4 +11,10 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/GoogleARCore/Source/AugmentedImage/Scenes/ARCoreAppr.unity
     guid: be567d47d3ab94b3badc5b211f535a24
+  - enabled: 1
+    path: Assets/GoogleARCore/Source/AugmentedImage/Scenes/AccelArray.unity
+    guid: dfe50f0472428cd44aaa19f84ee4e21f
+  - enabled: 1
+    path: Assets/GoogleARCore/Source/AugmentedImage/Scenes/CumAccel.unity
+    guid: 7bf937b843f5376499825c94017c2c2e
   m_configObjects: {}

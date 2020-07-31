@@ -8,18 +8,19 @@ public class MenuManager : MonoBehaviour
     public void LoadARCore()
     {
         SceneManager.LoadScene(1);
+        //ShowAndroidToastMessage("Load ARCoreApproach Scene");
     }
     
     public void LoadAccelArray()
     {
-        //SceneManager.LoadScene(2);
-        ShowAndroidToastMessage("Load AccelArray Scene");
+        SceneManager.LoadScene(2);
+        //ShowAndroidToastMessage("Load AccelArray Scene");
     }
     
     public void LoadCumAccel()
     {
-        //SceneManager.LoadScene(3);
-        ShowAndroidToastMessage("Load CumAccel Scene");
+        SceneManager.LoadScene(3);
+        //ShowAndroidToastMessage("Load CumAccel Scene");
     }
 
     public void QuitApplication()

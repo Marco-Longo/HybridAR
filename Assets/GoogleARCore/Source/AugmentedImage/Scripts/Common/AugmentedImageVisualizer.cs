@@ -26,6 +26,7 @@ namespace GoogleARCore.Examples.AugmentedImage
     using GoogleARCore;
     using GoogleARCoreInternal;
     using UnityEngine;
+    using UnityEngine.SceneManagement;
     using UnityEngine.UI;
 
 
@@ -107,7 +108,12 @@ namespace GoogleARCore.Examples.AugmentedImage
             Pose cameraPose = Frame.Pose;
 
             float dist = Vector3.Distance(objectPose.position, cameraPose.position);
-            ARDeviceManager.Instance.SetDistance(dist);
+            if (SceneManager.GetActiveScene().buildIndex == 1)
+                ARDeviceManager.Instance.SetDistance(dist);
+            else if (SceneManager.GetActiveScene().buildIndex == 2)
+                ArrayDevManager.Instance.SetDistance(dist);
+            else if (SceneManager.GetActiveScene().buildIndex == 3)
+                CumDevManager.Instance.SetDistance(dist);
 
             return dist;
         }
