@@ -12,6 +12,7 @@ public class ArrayDevManager : MonoBehaviour
     private static ArrayDevManager _instance;
 
     private bool tracking;
+    private string dataString;
     private float devDistance;
 
     private Vector3 devPosition;
@@ -21,7 +22,7 @@ public class ArrayDevManager : MonoBehaviour
     private System.Diagnostics.Stopwatch stopWatch;
 
     private const int N = 8;
-    private List<float> acceleration_X;
+    private List<Vector3> accelerationVec;
 
     public Text devInfoText;
 
@@ -42,13 +43,14 @@ public class ArrayDevManager : MonoBehaviour
     private void Start()
     {
         tracking = false;
+        dataString = "AccelArray\n";
         devDistance = -1.0f;
         ArrayDeviceGyro.InitGyro();
         devPosition = Vector3.zero;
         devRotation = Vector3.zero;
         devVelocity = Vector3.zero;
         devAcceleration = Vector3.zero;
-        acceleration_X = new List<float>();
+        accelerationVec = new List<Vector3>();
         stopWatch = new System.Diagnostics.Stopwatch();
     }
 
@@ -80,9 +82,9 @@ public class ArrayDevManager : MonoBehaviour
         devAcceleration.y = values.y - gravity.y;
         devAcceleration.z = values.z - gravity.z;
 
-        acceleration_X.Add(devAcceleration.x);
-        if (acceleration_X.Count > N)
-            acceleration_X.RemoveAt(0);
+        accelerationVec.Add(devAcceleration);
+        if (accelerationVec.Count > N)
+            accelerationVec.RemoveAt(0);
     }
 
     private void EvaluateMovement()
@@ -91,21 +93,15 @@ public class ArrayDevManager : MonoBehaviour
         stopWatch.Stop();
         float dt = stopWatch.Elapsed.Milliseconds * 0.001f;
 
-        float dx = 0.0f;
-        float vx = 0.0f;
+        Vector3 dist = Vector3.zero;
+        Vector3 vel = Vector3.zero;
         for (int i = 1; i < N; i++)
         {
-            //vx += acceleration_X[i] * dt; // With i starting from 0 in the for loop
-            vx += (acceleration_X[i - 1] + acceleration_X[i]) / 2.0f * dt;
-            dx += vx * dt;
+            vel += (accelerationVec[i - 1] + accelerationVec[i]) / 2.0f * dt;
+            dist += vel * dt;
         }
-        devPosition.x += dx;
-        devVelocity.x = vx;
-
-        /*
-        devPosition.x = devPosition.x + dt * devVelocity.x;
-        devVelocity.x = devVelocity.x + dt * devAcceleration.x;
-        */
+        devPosition += dist;
+        devVelocity = vel;
     }
 
     public void SetDistance(float dist)
@@ -136,5 +132,15 @@ public class ArrayDevManager : MonoBehaviour
     public void LoadMenu()
     {
         SceneManager.LoadScene(0);
+    }
+
+    public void RegisterData()
+    {
+        dataString += devPosition.x.ToString() + ",";
+        dataString += devPosition.y.ToString() + ",";
+        dataString += devPosition.z.ToString();
+        dataString += "\n";
+
+        PlayerPrefs.SetString("FILE", dataString);
     }
 }
