@@ -11,6 +11,7 @@ public class ARDeviceManager : MonoBehaviour
     private static ARDeviceManager _instance;
     private float devDistance;
     private bool tracking;
+    private string dataString;
 
     private Vector3 devPosition;
     private Vector3 devOffset;
@@ -36,6 +37,7 @@ public class ARDeviceManager : MonoBehaviour
     private void Start()
     {
         tracking = false;
+        dataString = "ARCoreApproach\n";
         devDistance = -1.0f;
         devPosition = Vector3.zero;
         devOffset = Vector3.zero;
@@ -111,5 +113,15 @@ public class ARDeviceManager : MonoBehaviour
     public void LoadMenu()
     {
         SceneManager.LoadScene(0);
+    }
+
+    public void RegisterData()
+    {
+        dataString += devPosition.x.ToString() + ",";
+        dataString += devPosition.y.ToString() + ",";
+        dataString += devPosition.z.ToString();
+        dataString += "\n";
+
+        PlayerPrefs.SetString("FILE", dataString);
     }
 }

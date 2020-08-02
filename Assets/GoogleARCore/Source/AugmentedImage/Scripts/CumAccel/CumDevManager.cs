@@ -14,6 +14,7 @@ public class CumDevManager : MonoBehaviour
     private static CumDevManager _instance;
 
     private bool tracking;
+    private string dataString;
     private float devDistance;
     private Vector3 devPosition;
     private Vector3 devRotation;
@@ -21,13 +22,11 @@ public class CumDevManager : MonoBehaviour
 
     private readonly float dt = 0.001f;
     private const float kFilteringFactor = 0.1f;
-    private Vector3 accThreshold = new Vector3(0.08f, 0.08f, 0.08f);
     private Vector3 lastAccel;
     private Vector3 totalAccel;
     private Vector3 vel;
     private Vector3 initVel;
-    private Vector3 distance;
-
+    
     public Text devInfoText;
     private Stopwatch sw;
     private float currTimestamp;
@@ -50,6 +49,7 @@ public class CumDevManager : MonoBehaviour
     private void Start()
     {
         tracking = false;
+        dataString = "CumulativeAccel\n";
         devDistance = -1.0f;
         devPosition = Vector3.zero;
         devRotation = Vector3.zero;
@@ -59,7 +59,6 @@ public class CumDevManager : MonoBehaviour
         totalAccel = Vector3.zero;
         vel = Vector3.zero;
         initVel = Vector3.zero;
-        distance = Vector3.zero;
 
         CumDeviceGyro.InitGyro();
         sw = null;
@@ -78,7 +77,7 @@ public class CumDevManager : MonoBehaviour
 
         // Update GUI
         devInfoText.text = "Device Info:\n Position: " + devPosition + "\n Rotation: " + devRotation + "\n FPS: " + 1.0f / Time.deltaTime +
-                           "\n LastAccel: " + lastAccel + "\n TotAccel: " + totalAccel + "\n Velocity: " + vel + "\n DistanceX: " + distance.x;
+                           "\n LastAccel: " + lastAccel + "\n TotAccel: " + totalAccel + "\n Velocity: " + vel;
     }
 
     private void AccelerationSample()
@@ -97,28 +96,12 @@ public class CumDevManager : MonoBehaviour
         totalAccel += data - lastAccel; //Accumulate the acceleration value
 
         vel = initVel + (totalAccel * (currTimestamp - prevTimestamp)); //Calculate the current velocity
+        if (lastAccel.magnitude < 0.1f)
+            vel = Vector3.zero;
         initVel = vel; //Update the initial velocity for the next frames
 
-        distance += vel * (currTimestamp - prevTimestamp); //Calculate the distance from the velocity value
-
-        /*
-        if (totalAccel.x < accThreshold.x || totalAccel.x > -accThreshold.x)
-        {
-            vel.x = 0.0f;
-            initVel.x = 0.0f;
-        }
-        if (totalAccel.y < accThreshold.y || totalAccel.y > -accThreshold.y)
-        {
-            vel.y = 0.0f;
-            initVel.y = 0.0f;
-        }
-        if (totalAccel.z < accThreshold.z || totalAccel.z > -accThreshold.z)
-        {
-            vel.z = 0.0f;
-            initVel.z = 0.0f;
-        }
-        */
-
+        devPosition += vel * (currTimestamp - prevTimestamp); //Calculate the distance from the velocity value
+        
         prevTimestamp = currTimestamp;
     }
 
@@ -150,5 +133,15 @@ public class CumDevManager : MonoBehaviour
     public void LoadMenu()
     {
         SceneManager.LoadScene(0);
+    }
+
+    public void RegisterData()
+    {
+        dataString += devPosition.x.ToString() + ",";
+        dataString += devPosition.y.ToString() + ",";
+        dataString += devPosition.z.ToString();
+        dataString += "\n";
+
+        PlayerPrefs.SetString("FILE", dataString);
     }
 }

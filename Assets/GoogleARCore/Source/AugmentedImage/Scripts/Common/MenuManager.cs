@@ -25,6 +25,7 @@ public class MenuManager : MonoBehaviour
 
     public void QuitApplication()
     {
+        DataWriter.SaveFile(PlayerPrefs.GetString("FILE"));
         Application.Quit();
     }
 
