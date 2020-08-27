@@ -28,6 +28,7 @@ public class CumDevManager : MonoBehaviour
     private Vector3 initVel;
     
     public Text devInfoText;
+    public Text debugText;
     private Stopwatch sw;
     private float currTimestamp;
     private float prevTimestamp;
@@ -76,8 +77,8 @@ public class CumDevManager : MonoBehaviour
         devAcceleration = Input.gyro.userAcceleration;
 
         // Update GUI
-        devInfoText.text = "Device Info:\n Position: " + devPosition + "\n Rotation: " + devRotation + "\n FPS: " + 1.0f / Time.deltaTime +
-                           "\n LastAccel: " + lastAccel + "\n TotAccel: " + totalAccel + "\n Velocity: " + vel;
+        devInfoText.text = "Device Info:\n Position: " + devPosition + "\n Rotation: " + devRotation + "\n Acceleration: " + lastAccel +
+                           "\n Velocity: " + vel;
     }
 
     private void AccelerationSample()
@@ -133,6 +134,12 @@ public class CumDevManager : MonoBehaviour
     public void LoadMenu()
     {
         SceneManager.LoadScene(0);
+    }
+
+    public void ToggleDebug()
+    {
+        devInfoText.gameObject.SetActive(!devInfoText.gameObject.activeInHierarchy);
+        debugText.gameObject.SetActive(!debugText.gameObject.activeInHierarchy);
     }
 
     public void RegisterData()

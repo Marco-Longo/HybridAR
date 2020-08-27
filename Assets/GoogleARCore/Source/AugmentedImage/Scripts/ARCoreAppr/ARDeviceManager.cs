@@ -19,6 +19,7 @@ public class ARDeviceManager : MonoBehaviour
     private Vector3 devAcceleration;
 
     public Text devInfoText;
+    public Text debugText;
 
     public static ARDeviceManager Instance { get { return _instance; } }
 
@@ -65,9 +66,6 @@ public class ARDeviceManager : MonoBehaviour
 
         devInfoText.text = "Device Info:\n Position: " + devPosition + "\n Rotation: " + devRotation + "\n Acceleration: " + devAcceleration +
                            "\n Camera Pose: " + Frame.Pose.ToString();
-
-        //IDEA: use Frame.Pose to calculate camera position (tracking seems pretty accurate, but initial position varies every time, 
-        //      since the origin is always set to the point where the device is located when the app is started)
     }
 
     private void EvaluatePosition()
@@ -101,18 +99,15 @@ public class ARDeviceManager : MonoBehaviour
         devDistance = d;
     }
 
-    /*
-    public void SetPosition(float x, float y, float z)
-    {
-        devPosition.x = x; // The alignment error between the device and the marker centres (horizontal axis)
-        devPosition.y = y; // The height difference between the device and the marker centres (vertical axis)
-        devPosition.z = z; // The linear distance between the device and the marker (forward axis)
-    }
-    */
-
     public void LoadMenu()
     {
         SceneManager.LoadScene(0);
+    }
+
+    public void ToggleDebug()
+    {
+        devInfoText.gameObject.SetActive(!devInfoText.gameObject.activeInHierarchy);
+        debugText.gameObject.SetActive(!debugText.gameObject.activeInHierarchy);
     }
 
     public void RegisterData()

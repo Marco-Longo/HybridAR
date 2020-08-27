@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Data;
+using GoogleARCore;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
@@ -25,6 +26,7 @@ public class ArrayDevManager : MonoBehaviour
     private List<Vector3> accelerationVec;
 
     public Text devInfoText;
+    public Text debugText;
 
     public static ArrayDevManager Instance { get { return _instance; } }
 
@@ -66,8 +68,8 @@ public class ArrayDevManager : MonoBehaviour
         SampleAcceleration();
 
         // Update GUI
-        devInfoText.text = "Device Info:\n Position: " + devPosition + "\n Rotation: " + devRotation + "\n AccelerationX: " + devAcceleration.x +
-                           "\n AccelerationY: " + devAcceleration.y + "\n AccelerationZ: " + devAcceleration.z;
+        devInfoText.text = "Device Info:\n Position: " + devPosition + "\n Rotation: " + devRotation + "\n Acceleration: " + devAcceleration +
+                           "\n Camera Pose: " + Frame.Pose.ToString();
     }
 
     private void SampleAcceleration()
@@ -132,6 +134,12 @@ public class ArrayDevManager : MonoBehaviour
     public void LoadMenu()
     {
         SceneManager.LoadScene(0);
+    }
+
+    public void ToggleDebug()
+    {
+        devInfoText.gameObject.SetActive(!devInfoText.gameObject.activeInHierarchy);
+        debugText.gameObject.SetActive(!debugText.gameObject.activeInHierarchy);
     }
 
     public void RegisterData()
