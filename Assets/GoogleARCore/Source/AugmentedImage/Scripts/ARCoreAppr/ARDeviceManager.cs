@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using TMPro;
 using UnityEngine.SceneManagement;
 using GoogleARCore;
 using System;
@@ -20,6 +21,9 @@ public class ARDeviceManager : MonoBehaviour
 
     public Text devInfoText;
     public Text debugText;
+    public Image outputEntry1;
+    public Image outputEntry2;
+    public Image outputEntry3;
 
     public static ARDeviceManager Instance { get { return _instance; } }
 
@@ -66,6 +70,9 @@ public class ARDeviceManager : MonoBehaviour
 
         devInfoText.text = "Device Info:\n Position: " + devPosition + "\n Rotation: " + devRotation + "\n Acceleration: " + devAcceleration +
                            "\n Camera Pose: " + Frame.Pose.ToString();
+        outputEntry1.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = "X: " + devPosition.x.ToString();
+        outputEntry2.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = "Y: " + devPosition.y.ToString();
+        outputEntry3.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = "Z: " + devPosition.z.ToString();
     }
 
     private void EvaluatePosition()
@@ -108,6 +115,9 @@ public class ARDeviceManager : MonoBehaviour
     {
         devInfoText.gameObject.SetActive(!devInfoText.gameObject.activeInHierarchy);
         debugText.gameObject.SetActive(!debugText.gameObject.activeInHierarchy);
+        outputEntry1.gameObject.SetActive(!outputEntry1.gameObject.activeInHierarchy);
+        outputEntry2.gameObject.SetActive(!outputEntry2.gameObject.activeInHierarchy);
+        outputEntry3.gameObject.SetActive(!outputEntry3.gameObject.activeInHierarchy);
     }
 
     public void RegisterData()

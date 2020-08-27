@@ -7,6 +7,7 @@ using System.Diagnostics;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
+using TMPro;
 using UnityEngine.XR;
 
 public class CumDevManager : MonoBehaviour
@@ -29,6 +30,9 @@ public class CumDevManager : MonoBehaviour
     
     public Text devInfoText;
     public Text debugText;
+    public Image outputEntry1;
+    public Image outputEntry2;
+    public Image outputEntry3;
     private Stopwatch sw;
     private float currTimestamp;
     private float prevTimestamp;
@@ -79,6 +83,9 @@ public class CumDevManager : MonoBehaviour
         // Update GUI
         devInfoText.text = "Device Info:\n Position: " + devPosition + "\n Rotation: " + devRotation + "\n Acceleration: " + lastAccel +
                            "\n Velocity: " + vel;
+        outputEntry1.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = "X: " + devPosition.x.ToString();
+        outputEntry2.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = "Y: " + devPosition.y.ToString();
+        outputEntry3.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = "Z: " + devPosition.z.ToString();
     }
 
     private void AccelerationSample()
@@ -140,6 +147,9 @@ public class CumDevManager : MonoBehaviour
     {
         devInfoText.gameObject.SetActive(!devInfoText.gameObject.activeInHierarchy);
         debugText.gameObject.SetActive(!debugText.gameObject.activeInHierarchy);
+        outputEntry1.gameObject.SetActive(!outputEntry1.gameObject.activeInHierarchy);
+        outputEntry2.gameObject.SetActive(!outputEntry2.gameObject.activeInHierarchy);
+        outputEntry3.gameObject.SetActive(!outputEntry3.gameObject.activeInHierarchy);
     }
 
     public void RegisterData()

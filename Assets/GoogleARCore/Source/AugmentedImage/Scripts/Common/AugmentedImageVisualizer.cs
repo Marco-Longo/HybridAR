@@ -65,7 +65,7 @@ namespace GoogleARCore.Examples.AugmentedImage
 
         private void Awake()
         {
-            debugText = GameObject.Find("DebugText").GetComponent<Text>();
+            debugText = GameObject.Find("Canvas").transform.GetChild(1).gameObject.GetComponent<Text>();
         }
 
         /// <summary>
